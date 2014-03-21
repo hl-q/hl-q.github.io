@@ -27,8 +27,47 @@ jemetsunevirgulesijeveux
     border-color: #f9f2ff;
 }
 
+.form-control,
+.btn-default,
+jemetsunevirgulesijeveux
+{
+    border-color: #d7d1e8;
+}
+
+.btn-default:focus,
+.btn-default:hover,
+jemetsunevirgulesijeveux
+{
+    background: #f9f2ff;
+    border-color: #d7d1e8;
+    color: #603f7f;
+}
+
+.form-control:focus,
+.form-control:hover,
+jemetsunevirgulesijeveux
+{
+    border-color: #d7d1e8;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(201, 165, 255, 0.6);
+}
+
+.form-control:-moz-placeholder {
+    color: #c9a5ff;
+}
+.form-control::-moz-placeholder {
+    color: #c9a5ff;
+    opacity: 1;
+}
+.form-control:-ms-input-placeholder {
+    color: #c9a5ff;
+}
+.form-control::-webkit-input-placeholder {
+    color: #c9a5ff;
+}
+
 body,
 h1, h2, h3,
+a,
 .jumbotron,
 .navbar, 
 .panel-default > .panel-heading,
@@ -36,13 +75,19 @@ h1, h2, h3,
 .navbar-default .navbar-brand,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > .active > a,
+.btn-default,
 jemetsunevirgulesijeveux
 {
-    color: #69428B;
+    color: #603f7f;
+    //color: #69428B;
 }
 
 body {
     background: url("../img/bg.jpg");
+}
+
+ol {
+    padding-left: 20px;
 }
 
 .panel-default {
@@ -66,17 +111,27 @@ jemetsunevirgulesijeveux
     background: #d7d1e8;
 }
 
+.navbar-brand img {
+    margin-top: -10px;
+    height: 40px;
+}
+
 .hlq-spacer-navbar {
-    height: 70px;
+    height: 80px;
 }
 
 .hlq-main {
     background: white;
-    padding: 15px;
+    padding: 30px;
 }
 
 .container .hlq-main {
     border-radius: 6px;
+}
+
+.hlq-main a,
+.panel-body a {
+    font-weight: bold;
 }
 
 .hlq-filled-panel {
@@ -91,4 +146,13 @@ a.hlq-fill-div {
     height: 100%;
     width: 100%;
     text-decoration: none;
+}
+
+.checkbox-inline {
+    margin: 10px;
+}
+
+#threeRenderer {
+    width: 640px;
+    padding-bottom: 30px;
 }

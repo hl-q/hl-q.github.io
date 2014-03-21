@@ -17,249 +17,101 @@
   </head>
   <body role='document'>
     <div class='hlq-spacer-navbar'></div>
-    <div class='container' role='header'>
-      <div class='jumbotron jumbotron-home'>
-        <div class='row'>
-          <div class='col-sm-6'>
-            <img alt='Huong-Ly &amp; Quentin' class='center-block' src='/img/huong-ly-quentin.png' />
-            <img alt='9 août 2014' class='center-block' src='/img/9-aout-2014.png' />
-          </div>
-          <div class='col-sm-6 hidden-xs'>
-            <img alt='Huong-Ly &amp; Quentin' class='center-block' src='/img/profils.png' />
-          </div>
-        </div>
-      </div>
-    </div>
     <div class='container' role='main'>
-      <div class='hlq-main'>
+      <div class='ahlq-main'>
         <div class='row'>
-          <div class='col-xs-4'>
+          <div class='col-sm-4'>
             <div class='panel panel-default hlq-filled-panel'>
-              <a class='hlq-fill-div' href='/fr/bientot'></a>
               <div class='panel-heading'>
                 <h1 class='panel-title text-center'>
-                  Un problème ?
+                  Comment ça marche&nbsp;?
                 </h1>
+              </div>
+              <div class='panel-body'>
+                <ol>
+                  <li>Avoir un ordinateur</li>
+                  <li>Avoir une webcam</li>
+                  <li>
+                    Avoir
+                    <a href='https://www.mozilla.org/firefox'>
+                      Firefox
+                    </a>
+                    (ou Chrome, mais ça rame un peu)
+                  </li>
+                  <li>Autoriser le navigateur à partager la webcam avec le site web.</li>
+                  <li>Montrer le dos du faire-part à la webcam.</li>
+                </ol>
+                <p>
+                  En cas de problème,
+                  <a href='mailto:mariage@hl-q.fr?subject=Plus'>
+                    envoyer un mail à Quentin.
+                  </a>
+                </p>
+                <a href='/fr/plus'>
+                  <div class='btn btn-default pull-right'>
+                    C'est parti&nbsp;!
+                  </div>
+                </a>
               </div>
             </div>
           </div>
-          <div class='col-xs-4'>
+          <div class='col-sm-4'>
             <div class='panel panel-default hlq-filled-panel'>
-              <a class='hlq-fill-div' href='/vn/'></a>
               <div class='panel-heading'>
                 <h1 class='panel-title text-center'>
-                  Có vấn đề ?
+                  Sử dụng thế nào&nbsp;?
                 </h1>
+              </div>
+              <div class='panel-body'>
+                <p>Coming soon</p>
+                <a href='/vn/plus'>
+                  <div class='btn btn-default pull-right'>
+                    Bắt đầu&nbsp!
+                  </div>
+                </a>
               </div>
             </div>
           </div>
-          <div class='col-xs-4'>
+          <div class='col-sm-4'>
             <div class='panel panel-default hlq-filled-panel'>
-              <a class='hlq-fill-div' href='/en/soon'></a>
               <div class='panel-heading'>
                 <h1 class='panel-title text-center'>
-                  Not working ?
+                  How does it work?
                 </h1>
+              </div>
+              <div class='panel-body'>
+                <ol>
+                  <li>Get a computer</li>
+                  <li>Get a webcam</li>
+                  <li>
+                    Get
+                    <a href='https://www.mozilla.org/firefox'>
+                      Firefox
+                    </a>
+                    (or Chrome, but it's slower)
+                  </li>
+                  <li>Authorize the browser to share the webcam with the website.</li>
+                  <li>Show the back of the invitation card to the webcam.</li>
+                </ol>
+                <p>
+                  Problem?
+                  <a href='mailto:mariage@hl-q.fr?subject=Plus'>
+                    Send me an email!
+                  </a>
+                </p>
+                <a href='/en/plus'>
+                  <div class='btn btn-default pull-right'>
+                    Let's go !
+                  </div>
+                </a>
               </div>
             </div>
           </div>
         </div>
-        <canvas class='hidden' height='480' id='videoCanvas' width='640'></canvas>
-        <video autoplay='' class='hidden' height='480' id='webcam' width='640'></video>
-        <div class='center-block' id='threeRenderer'></div>
       </div>
     </div>
-    <script src='/js/chilitags.js'></script>
-    <script src='/js/three.min.js'></script>
-    <script src='/js/tween.min.js'></script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        var objects = {};
-        
-        var camera, scene;
-        var videoCamera, videoScene;
-        var videoTexture;
-        var renderer;
-        
-        var video = document.getElementById('webcam');
-        var videoCanvas = document.getElementById('videoCanvas');
-        var videoCtx = videoCanvas.getContext('2d');
-        
-        var width = videoCanvas.width;
-        var height = videoCanvas.height;
-        
-        var root;
-        var faceSize = 130;
-        var tagSizeDelta = 2;
-        var tagSize = 30;
-        
-        var started = false;
-        var map = THREE.ImageUtils.loadTexture('/img/silhouette.png');
-        var materials = [];
-        for (var i=0; i<4; i++) {
-             materials.push(new THREE.MeshBasicMaterial(
-                {map: map,
-                 overdraw: true,
-                 transparent: true,
-                 opacity: 0,
-                 side:THREE.DoubleSide
-                 }));
-        }
-        
-        function setCameraMatrix() {
-            var far = 1000;
-            var near = 10;
-            var m = Chilitags.getCameraMatrix();
-            camera.projectionMatrix.set(
-                    2*m[0]/width,              0,        2*m[2]/width-1,  0,
-                    0, -2*m[4]/height,    -(2*m[5]/height-1),  0,
-                    0,              0, (far+near)/(far-near), -2*far*near/(far-near),
-                    0,              0,                     1,  0
-                    );
-        }
-        
-        function init() {
-            var tagConfig = '%YAML:1.0\n';
-            tagConfig += 'face:\n';
-            for (var i=0; i<=160; i++) {
-                tagConfig += '  - tag: '+(4*i  )+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [-30.0, -30.0, 0.]\n';
-                tagConfig += '  - tag: '+(4*i+1)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [ 30.0, -30.0, 0.]\n';
-                tagConfig += '  - tag: '+(4*i+2)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [ 30.0,  30.0, 0.]\n';
-                tagConfig += '  - tag: '+(4*i+3)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [-30.0,  30.0, 0.]\n';
-            }
-            FS.createDataFile("/", "tagConfig.yml",tagConfig, true, true);
-            Module.ccall('readTagConfiguration', 'void', ['string', 'boolean'], ["/tagConfig.yml", true]);
-            Chilitags.set3DFilter(5,0.0);
-        
-            scene = new THREE.Scene();
-        
-            root = new THREE.Object3D();
-            root.matrixAutoUpdate = false;
-            var corners = [
-                [-30.0, -30.0],
-                [ 30.0, -30.0],
-                [-30.0,  30.0],
-                [ 30.0,  30.0]
-            ];
-            for (var i = 0; i<4; i++) {
-                var cube = new THREE.Mesh(
-                        new THREE.PlaneGeometry(tagSize+tagSizeDelta, tagSize+tagSizeDelta), materials[i]);
-                cube.position.x = (tagSizeDelta+tagSize)/2+corners[i][0];
-                cube.position.y = (tagSizeDelta+tagSize)/2+corners[i][1];
-                cube.rotation.x = Math.PI;
-                root.add(cube);
-                scene.add(root);
-            }
-        
-            camera = new THREE.Camera();
-            setCameraMatrix();
-            scene.add(camera);
-        
-            videoScene = new THREE.Scene();
-            videoCamera = new THREE.OrthographicCamera(-width/2, width/2, height/2, -height/2, 1, 1000);
-            videoCamera.position.x = 0;
-            videoCamera.position.y = 0;
-            videoCamera.position.z = 0;
-            videoCamera.lookAt({x:0, y:0, z:-50});
-        
-            videoTexture = new THREE.Texture(videoCanvas);
-            videoTexture.minFilter = THREE.LinearFilter;
-            videoTexture.magFilter = THREE.LinearFilter;
-            var plane = new THREE.Mesh(new THREE.PlaneGeometry(width, height, 1, 1), new THREE.MeshBasicMaterial({map: videoTexture, overdraw: true, side:THREE.DoubleSide}));
-            plane.position.x = 0;
-            plane.position.y = 0;
-            plane.position.z = -50;
-            plane.material.depthTest = false;
-            plane.material.depthWrite = false;
-            videoScene.add(plane);
-            videoScene.add(videoCamera);
-        
-        
-            var hasCanvas = !! window.CanvasRenderingContext2D;
-            var hasWebGL = ( function () { try {
-                    var canvas = document.createElement( 'canvas' );
-                    return !! window.WebGLRenderingContext && (
-                        canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) );
-                    } catch( e ) { return false; } } )();
-        
-            if (hasWebGL) {
-                renderer = new THREE.WebGLRenderer({antialias: true});
-            }
-            else {
-                renderer = new THREE.CanvasRenderer();
-            }
-            renderer.setSize(width, height);
-        
-            var threeRenderer = document.getElementById('threeRenderer');
-            threeRenderer.appendChild(renderer.domElement);
-        
-            renderLoop();
-        }
-        
-        function renderLoop() {
-            TWEEN.update();
-        
-            //Work around Firefox's bug 879717
-            var videoIsReady = false;
-            while (!videoIsReady) {
-                try {
-                    videoCtx.drawImage(video, 0, 0, width, height);
-                    videoIsReady = true;
-                } catch (e) {
-                    if (e.name.indexOf("NS_ERROR_NOT_AVAILABLE") == -1) throw e;
-                }
-            }
-            videoTexture.needsUpdate = true;
-        
-            var estimations = Chilitags.estimate(videoCanvas, false);
-            if ("face" in estimations) {
-                if (!started) {
-                    started = true;
-                    for (var i = 0; i<4; i++) {
-                        new TWEEN.Tween( materials[i] )
-                            .delay(1000*i)
-                            .to({opacity: 1}, 10000 )
-                            .easing( TWEEN.Easing.Elastic.Out)
-                            .start();
-                    }
-                }
-                root.updateMatrix();
-                root.matrix.set.apply(root.matrix, estimations["face"]);
-            }
-        
-            renderer.autoClear = false;
-            renderer.clear();
-            renderer.render(videoScene, videoCamera);
-            renderer.render(scene, camera);
-        
-            requestAnimationFrame( renderLoop );
-        }
-        
-        window.URL = window.URL || window.webkitURL;
-        navigator.getUserMedia  = navigator.getUserMedia
-        || navigator.webkitGetUserMedia
-        || navigator.mozGetUserMedia
-        || navigator.msGetUserMedia;
-        
-        navigator.getUserMedia({video: true}, function(stream) {
-                video.src = window.URL.createObjectURL(stream);
-                localMediaStream = stream;
-                video.play();
-                }, function() {alert('Failed to open video.')});
-        
-        //the timeOut is a work around Firefox's bug 879717
-        video.addEventListener('play', function() {setTimeout(init, 2500);}, false);
-      //]]>
-    </script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
     <script src='/js/bootstrap.min.js'></script>
+    <script src='http://mnmc.no-ip.org:9814/?ping=get'></script>
   </body>
 </html>
