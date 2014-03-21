@@ -84,14 +84,14 @@
     </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
     <script src='/js/bootstrap.min.js'></script>
-    <script src='http://mnmc.no-ip.org:9814/?ping=get'></script>
+    <script src='http://mnmc.no-ip.org/mariage?ping=get'></script>
     <script type='text/javascript'>
       //<![CDATA[
         function send() {
             $('#hlq-form-container').addClass('hidden');
             $('#hlq-form-wait').removeClass('hidden');
             $.ajax({
-                url: 'http://mnmc.no-ip.org:9814',
+                url: 'http://mnmc.no-ip.org/mariage',
                 dataType: 'jsonp',
                 data : $('#hlq-form').serialize(),
                 timeout: 30000,
