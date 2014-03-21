@@ -96,14 +96,12 @@
                 data : $('#hlq-form').serialize(),
                 timeout: 30000,
                 success: function(json){
-                    console.log("OK");
                     $('#hlq-form-wait').addClass('hidden');
                     $('#hlq-form-container').removeClass('hidden');
                     $('#hlq-form-container').html(json.html);
                     displayGuestList();
                 },
                 error: function(jqXHR, textStatus, errorThrown){
-                    console.log(textStatus);
                     $('#hlq-form-wait').addClass('hidden');
                     $('#hlq-form-error').removeClass('hidden');
                 }
