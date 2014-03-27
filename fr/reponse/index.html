@@ -90,7 +90,7 @@
             $('#hlq-form-container').addClass('hidden');
             $('#hlq-form-wait').removeClass('hidden');
             $.ajax({
-                url: 'http://mnmc.no-ip.org/mariage',
+                url: 'http://rasleapi.no-ip.biz/mariage',
                 dataType: 'jsonp',
                 data : $('#hlq-form').serialize(),
                 timeout: 30000,
@@ -128,6 +128,6 @@
         displayGuestList();
       //]]>
     </script>
-    <script src='http://mnmc.no-ip.org/mariage?ping=get'></script>
+    <script src='http://rasleapi.no-ip.biz/mariage?ping=get'></script>
   </body>
 </html>
