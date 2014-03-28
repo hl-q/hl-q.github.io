@@ -49,7 +49,7 @@
     </div>
     <div class='hlq-spacer-navbar'></div>
     <div class='container' role='main'>
-      <div class='ahlq-main'>
+      <div class='hlq-main'>
         <canvas class='hidden' height='480' id='videoCanvas' width='640'></canvas>
         <video autoplay='' class='hidden' height='480' id='webcam' width='640'></video>
         <div class='center-block' id='threeRenderer'></div>
@@ -134,7 +134,8 @@
     <script src='/js/tween.min.js'></script>
     <script type='text/javascript'>
       //<![CDATA[
-        var objects = {};
+        //Not so quick, but definitely dirty code. Don't judge :p
+        
         
         var camera, scene;
         var videoCamera, videoScene;
@@ -148,23 +149,15 @@
         var width = videoCanvas.width;
         var height = videoCanvas.height;
         
-        var root;
-        var faceSize = 130;
-        var tagSizeDelta = 2;
-        var tagSize = 30;
+        var card;
+        var tagSizeDelta = 0;
+        var tagSize = 33.3;
         
         var started = false;
-        var map = THREE.ImageUtils.loadTexture('/img/silhouette.png');
-        var materials = [];
-        for (var i=0; i<4; i++) {
-             materials.push(new THREE.MeshBasicMaterial(
-                {map: map,
-                 overdraw: true,
-                 transparent: true,
-                 opacity: 0,
-                 side:THREE.DoubleSide
-                 }));
-        }
+        var tagMap = THREE.ImageUtils.loadTexture('/img/silhouette.png');
+        var tagCovers = [];
+        
+        var photos = [];
         
         function setCameraMatrix() {
             var far = 1000;
@@ -181,47 +174,86 @@
         function init() {
             var tagConfig = '%YAML:1.0\n';
             tagConfig += 'face:\n';
-            for (var i=0; i<=160; i++) {
+            for (var i=0; i<=170; i++) {
                 tagConfig += '  - tag: '+(4*i  )+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [-30.0, -30.0, 0.]\n';
+                tagConfig += '    size: 33.3\n';
+                tagConfig += '    translation: [-33.3, -33.3, 0.]\n';
                 tagConfig += '  - tag: '+(4*i+1)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [ 30.0, -30.0, 0.]\n';
+                tagConfig += '    size: 33.3\n';
+                tagConfig += '    translation: [ 33.3, -33.3, 0.]\n';
                 tagConfig += '  - tag: '+(4*i+2)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [ 30.0,  30.0, 0.]\n';
+                tagConfig += '    size: 33.3\n';
+                tagConfig += '    translation: [ 33.3,  33.3, 0.]\n';
                 tagConfig += '  - tag: '+(4*i+3)+'\n';
-                tagConfig += '    size: 30\n';
-                tagConfig += '    translation: [-30.0,  30.0, 0.]\n';
+                tagConfig += '    size: 33.3\n';
+                tagConfig += '    translation: [-33.3,  33.3, 0.]\n';
             }
             FS.createDataFile("/", "tagConfig.yml",tagConfig, true, true);
             Module.ccall('readTagConfiguration', 'void', ['string', 'boolean'], ["/tagConfig.yml", true]);
-            Chilitags.set3DFilter(5,0.0);
+            Chilitags.set3DFilter(5, 0.0);
         
             scene = new THREE.Scene();
         
-            root = new THREE.Object3D();
-            root.matrixAutoUpdate = false;
+            card = new THREE.Object3D();
+            card.matrixAutoUpdate = false;
             var corners = [
-                [-30.0, -30.0],
-                [ 30.0, -30.0],
-                [-30.0,  30.0],
-                [ 30.0,  30.0]
+                [-33.3, -33.3],
+                [ 33.3, -33.3],
+                [-33.3,  33.3],
+                [ 33.3,  33.3]
             ];
             for (var i = 0; i<4; i++) {
-                var cube = new THREE.Mesh(
-                        new THREE.PlaneGeometry(tagSize+tagSizeDelta, tagSize+tagSizeDelta), materials[i]);
-                cube.position.x = (tagSizeDelta+tagSize)/2+corners[i][0];
-                cube.position.y = (tagSizeDelta+tagSize)/2+corners[i][1];
-                cube.rotation.x = Math.PI;
-                root.add(cube);
-                scene.add(root);
+                tagCovers[i] = new THREE.Mesh(
+                        new THREE.PlaneGeometry(tagSize+tagSizeDelta, tagSize+tagSizeDelta),
+                        new THREE.MeshBasicMaterial(
+                            {map: tagMap,
+                             overdraw: true,
+                             transparent: true,
+                             opacity: 0,
+                             side:THREE.DoubleSide
+                             }));
+                tagCovers[i].position.x = (tagSize)/2+corners[i][0];
+                tagCovers[i].position.y = (tagSize)/2+corners[i][1];
+                tagCovers[i].rotation.x = Math.PI;
+                card.add(tagCovers[i]);
+                scene.add(card);
             }
         
             camera = new THREE.Camera();
             setCameraMatrix();
             scene.add(camera);
+        
+            var photoFiles = [
+                '/img/slide1.jpg',
+                '/img/slide2.jpg',
+                '/img/slide3.jpg',
+                '/img/slide4.jpg',
+                '/img/slide5.jpg',
+                '/img/slide6.jpg',
+                '/img/slide7.jpg',
+                '/img/slide8.jpg',
+                '/img/slide9.jpg',
+                '/img/slide10.jpg'
+                ];
+            var photoWidth = 135;
+            var photoHeight = photoWidth*3/4;
+            //var photoHeight = 130;
+            //var photoWidth = photoHeight*4/3;
+            for (var i = 0; i<photoFiles.length; i++) {
+                photos[i] = new THREE.Mesh(
+                    new THREE.PlaneGeometry(photoWidth, photoHeight),
+                    new THREE.MeshBasicMaterial(
+                        {map: THREE.ImageUtils.loadTexture(photoFiles[i]),
+                         overdraw: true,
+                         transparent: true,
+                         opacity: 0,
+                         side:THREE.DoubleSide
+                         }));
+                photos[i].position.x = tagSize/2;
+                photos[i].position.y = tagSize/2;
+                photos[i].rotation.x = Math.PI;
+                card.add(photos[i]);
+            }
         
             videoScene = new THREE.Scene();
             videoCamera = new THREE.OrthographicCamera(-width/2, width/2, height/2, -height/2, 1, 1000);
@@ -281,18 +313,59 @@
         
             var estimations = Chilitags.estimate(videoCanvas, false);
             if ("face" in estimations) {
+                card.updateMatrix();
+                card.matrix.set.apply(card.matrix, estimations["face"]);
+        
                 if (!started) {
                     started = true;
+                    var animations = [];
                     for (var i = 0; i<4; i++) {
-                        new TWEEN.Tween( materials[i] )
-                            .delay(1000*i)
-                            .to({opacity: 1}, 10000 )
-                            .easing( TWEEN.Easing.Elastic.Out)
-                            .start();
+                        animations.push(
+                            new TWEEN.Tween(tagCovers[i].material)
+                                .to({opacity: 1}, 1000 )
+                                .easing(TWEEN.Easing.Linear.None)
+                            );
                     }
+        
+                    //TODO https://github.com/abrie/devderby-may-2013-technical/blob/example_7/arview.js#L90
+                    for (var i = 0; i<photos.length; i++) {
+        
+                        var jumpDuration = 2000;
+                        var showDuration = 3000;
+        
+                        var climax = -150;
+                        photos[i].position.y = 0+tagSize/2;
+                        photos[i].position.z = 1;
+                        var fadeIn = new TWEEN.Tween(photos[i].material)
+                            .to({opacity: 1}, 0 )
+                            .easing(TWEEN.Easing.Cubic.Out);
+                        var up = new TWEEN.Tween(photos[i].position)
+                            .to({y: climax+tagSize/2, z: -1}, jumpDuration*1/5 )
+                            .easing(TWEEN.Easing.Cubic.Out);
+                        var down = new TWEEN.Tween(photos[i].position)
+                            .to({y: 0+tagSize/2, z: -2}, jumpDuration*4/5 )
+                            .easing(TWEEN.Easing.Elastic.Out);
+                        var hide = new TWEEN.Tween(photos[i].position)
+                            .to({z:-1}, showDuration )
+                            .easing(TWEEN.Easing.Quintic.In);
+                        var fadeOut = new TWEEN.Tween(photos[i].material)
+                            .to({opacity: 0}, 0 )
+                            .easing(TWEEN.Easing.Cubic.Out);
+                        //up.onStart(fadeIn.start)
+                        animations.push(fadeIn);
+                        animations.push(up);
+                        animations.push(down);
+                        animations.push(hide);
+                        //animations.push(fadeOut);
+                        //hide.onComplete(fadeOut.start)
+                    }
+        
+                    for (var i = 0; i<animations.length-1; i++) {
+                        animations[i].chain(animations[i+1]);
+                    }
+                    animations[animations.length-1].chain(animations[4]);
+                    animations[0].start();
                 }
-                root.updateMatrix();
-                root.matrix.set.apply(root.matrix, estimations["face"]);
             }
         
             renderer.autoClear = false;
