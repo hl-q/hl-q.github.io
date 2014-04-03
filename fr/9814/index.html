@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang='fr'>
+  <head>
+    <meta charset='utf-8' />
+    <meta content='IE=edge' http-equiv='X-UA-Compatible' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
+    <meta content='Huong-Ly &amp; Quentin' name='description' />
+    <meta content='Huong-Ly &amp; Quentin' name='author' />
+    <!-- %link{href: "favicon.ico", rel: "shortcut icon"} -->
+    <title>Huong-Ly & Quentin</title>
+    <link href='/css/bootstrap.min.css' rel='stylesheet' />
+    <link href='/css/hl-q.css' rel='stylesheet' />
+    <!--[if lt IE 9]>
+      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'></script>
+      <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js'></script>
+    <![endif]-->
+    <link href='/css/9814.css' rel='stylesheet' />
+    <meta content='yes' name='apple-mobile-web-app-capable' />
+    <meta content='True' name='HandheldFriendly' />
+    <meta content='320' name='MobileOptimized' />
+    <meta content='width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui' name='viewport' />
+  </head>
+  <body role='document'>
+    <div class='navbar navbar-default navbar-fixed-top' role='navigation'>
+      <div class='container'>
+        <div class='navbar-header'>
+          <button class='navbar-toggle' data-target='.navbar-collapse' data-toggle='collapse' type='button'>
+            <span class='sr-only'>Toggle navigation</span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+          </button>
+          <a class='navbar-brand' href='/'>
+            <img alt='Huong-Ly &amp; Quentin' class='center-block' src='/img/huong-ly-quentin.png' />
+          </a>
+        </div>
+        <div class='navbar-collapse collapse'>
+          <ul class='nav navbar-nav'>
+            <li>
+              <a href='/fr/reponse'>Réponse</a>
+            </li>
+            <li class='dropdown'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                Plus
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li>
+                  <a href='/fr/plus'>Diaporama</a>
+                </li>
+                <li>
+                  <a href='/fr/9814'>9814</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href='/fr/accomodation'>Où dormir ?</a>
+            </li>
+            <li>
+              <a href='/fr/transport'>Comment venir ?</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class='hlq-spacer-navbar'></div>
+    <div class='container' role='main'>
+      <div class='hlq-main'>
+        <div class='row'>
+          <div class='col-md-12'>
+            <div id='videoFrame'></div>
+            <div class='score-container pull-right'>0</div>
+            <div class='best-container pull-right'>0</div>
+            <a class='restart-button pull-right'>Nouvelle partie</a>
+            <h1>9814</h1>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-12'>
+            <div class='game-container' id='game-dom'>
+              <div class='game-message'>
+                <p></p>
+                <div class='lower'>
+                  <a class='keep-playing-button'>Continuer</a>
+                  <a class='retry-button'>Réessayer</a>
+                </div>
+              </div>
+              <div class='grid-container'>
+                <div class='grid-row'>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                </div>
+                <div class='grid-row'>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                </div>
+                <div class='grid-row'>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                </div>
+                <div class='grid-row'>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                  <div class='grid-cell'></div>
+                </div>
+              </div>
+              <div class='tile-container'></div>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-12'>
+            <h2>But du jeu</h2>
+            <p>Reconstituer un faire-part en passant par chaque étape de fabrication. Quand deux faire-parts à la même étape se rencontrent, ils forment un faire-part à l'étape suivante.</p>
+            <h2>Comment jouer ?</h2>
+            <p>Devant la caméra, incliner le faire-part en papier vers le haut, le bas, la gauche ou la droite pour faire glisser les morceaux. On peut aussi faire glisser les morceaux avec les flèches du clavier.</p>
+            <h2>À suivre...</h2>
+            <p>Revenez plus tard pour d'autres petits jeux&nbsp;!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='/js/bind_polyfill.js'></script>
+    <script src='/js/classlist_polyfill.js'></script>
+    <script src='/js/animframe_polyfill.js'></script>
+    <script src='/js/keyboard_input_manager.js'></script>
+    <script src='/js/html_actuator.js'></script>
+    <script src='/js/grid.js'></script>
+    <script src='/js/tile.js'></script>
+    <script src='/js/local_storage_manager.js'></script>
+    <script src='/js/game_manager.js'></script>
+    <script src='/js/application.js'></script>
+    <script src='/js/three.min.js'></script>
+    <script src='/js/paprika.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+    <script src='/js/bootstrap.min.js'></script>
+    <script src='http://rasleapi.no-ip.biz/mariage?ping=get'></script>
+  </body>
+</html>

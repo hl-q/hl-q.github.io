@@ -23,6 +23,10 @@ body,
 .navbar-default .navbar-brand,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus,
+.dropdown-menu > li > a:hover,
 jemetsunevirgulesijeveux
 {
     background: #f9f2ff;
@@ -31,6 +35,7 @@ jemetsunevirgulesijeveux
 
 .form-control,
 .btn-default,
+.dropdown-menu,
 jemetsunevirgulesijeveux
 {
     border-color: #d7d1e8;
@@ -43,6 +48,14 @@ jemetsunevirgulesijeveux
     background: #f9f2ff;
     border-color: #d7d1e8;
     color: #603f7f;
+}
+
+a:hover,
+a:focus,
+jemetsunevirgulesijeveux
+{
+    color: #603f7f;
+    text-decoration: underline;
 }
 
 .form-control:focus,
@@ -70,6 +83,7 @@ jemetsunevirgulesijeveux
 body,
 h1, h2, h3,
 a,
+.dropdown-menu > li > a,
 .jumbotron,
 .navbar, 
 .panel-default > .panel-heading,
@@ -77,6 +91,7 @@ a,
 .navbar-default .navbar-brand,
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav .open .dropdown-menu > li > a,
 .btn-default,
 jemetsunevirgulesijeveux
 {
