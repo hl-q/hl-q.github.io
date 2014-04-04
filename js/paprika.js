@@ -14,6 +14,7 @@ var Paprika = Paprika || ( function () {
 
     var worker;
     var waitForWorker = false;
+    var cameraCallback;
 
     // list of functions to call back when tags have been detected in a new frame
     var updateCallbacks = [];
@@ -86,21 +87,27 @@ var Paprika = Paprika || ( function () {
 
             // receive from worker
             worker.onmessage = function(event) {
-                var objects = event.data.objects;
+                if (event.data.objects !== undefined) {
+                    var objects = event.data.objects;
 
-                for (var i=0; i<updateCallbacks.length; i++) {
-                    updateCallbacks[i].call(this, objects);
-                }
-                for (var objectName in objects) {
-                    if (objectName in objectCallbacks) {
-                        var callbacks = objectCallbacks[objectName];
-                        for (var i=0; i < callbacks.length; i++) {
-                            callbacks[i].call(this, objects[objectName]);
+                    for (var i=0; i<updateCallbacks.length; i++) {
+                        updateCallbacks[i].call(this, objects);
+                    }
+                    for (var objectName in objects) {
+                        if (objectName in objectCallbacks) {
+                            var callbacks = objectCallbacks[objectName];
+                            for (var i=0; i < callbacks.length; i++) {
+                                callbacks[i].call(this, objects[objectName]);
+                            }
                         }
                     }
-                }
 
-                waitForWorker = false;
+                    waitForWorker = false;
+                } else if (event.data.cameraMatrix !== undefined) {
+                    cameraCallback(event.data.cameraMatrix);
+                } else if (event.data.debug !== undefined) {
+                    //console.log(event.data.debug);
+                }
             };
 
             worker.onerror = function(error) {
@@ -301,6 +308,16 @@ var Paprika = Paprika || ( function () {
 
         bundleTags : function(bundles) {
             worker.postMessage({type: "bundle", bundles: bundles});
+        }
+,
+        set3DFilter : function(persistence, gain) {
+            worker.postMessage({type: "3dfilter", persistence: persistence, gain: gain});
+        }
+,
+
+        getCamera : function(callback) {
+            cameraCallback = callback;
+            worker.postMessage({type: "camera"});
         }
     }
 

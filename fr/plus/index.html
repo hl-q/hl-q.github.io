@@ -63,14 +63,19 @@
       <div class='hlq-main'>
         <div class='row'>
           <div class='col-sm-12'>
-            <canvas class='hidden' height='480' id='videoCanvas' width='640'></canvas>
-            <video autoplay='' class='hidden' height='480' id='webcam' width='640'></video>
-            <div class='center-block' id='threeRenderer'></div>
+            <div class='hlq-ar-container'>
+              <video autoplay='' height='480' id='webcam' width='640'></video>
+              <div id='threeRenderer'></div>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-sm-12'>
             <h1>
               Comment ça marche&nbsp;?
             </h1>
             <ol>
-              <li>Avoir un ordinateur (les téléphones et tablettes sont trop lents)</li>
+              <li>Avoir un ordinateur (les téléphones et tablettes rament)</li>
               <li>Avoir une webcam</li>
               <li>
                 Avoir
@@ -81,7 +86,7 @@
                 <a href='https://www.google.com/chrome' target='_blank'>
                   Chrome
                 </a>
-                (Firefox est parfois un peu capricieux)
+                (Firefox est plus rapide mais parfois capricieux ; les deux sont disponibles sur iOS et Android)
               </li>
               <li>Autoriser le navigateur à partager la webcam avec le site web</li>
               <li>Montrer le dos du faire-part à la webcam</li>
@@ -104,12 +109,12 @@
         </div>
       </div>
     </div>
-    <script src='/js/chilitags.js'></script>
-    <script src='/js/three.min.js'></script>
-    <script src='/js/tween.min.js'></script>
-    <script src='/js/plus.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
     <script src='/js/bootstrap.min.js'></script>
     <script src='http://rasleapi.no-ip.biz/mariage?ping=get'></script>
+    <script src='/js/three.min.js'></script>
+    <script src='/js/paprika.js'></script>
+    <script src='/js/tween.min.js'></script>
+    <script src='/js/plus.js'></script>
   </body>
 </html>

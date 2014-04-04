@@ -2,7 +2,10 @@ importScripts('chilitags.js');
 
 onmessage = function (e) {
 
+    //postMessage({debug:"entering onMessage"});
+
     if (e.data.type === "estimate") {
+        //postMessage({debug:"entering estimate"});
         var img = e.data.img;
         var w = e.data.w;
         var h = e.data.h;
@@ -23,6 +26,7 @@ onmessage = function (e) {
         var objects = JSON.parse(output);
         Module._free(inputBuf);
         if(objects !== undefined) postMessage({objects:objects});
+        //postMessage({debug:"leaving estimate"});
     }
 
     else if (e.data.type === "bundle") {
@@ -46,5 +50,12 @@ onmessage = function (e) {
         }
         FS.createDataFile("/", "tagConfig.yml", configFile, true, true);
         Module.ccall('readTagConfiguration', 'void', ['string', 'boolean'], ["/tagConfig.yml", true]);
+    }
+    else if (e.data.type === "3dfilter") {
+        var m = Chilitags.set3DFilter(e.data.persistence, e.data.gain);
+    }
+    else if (e.data.type === "camera") {
+        var m = Chilitags.getCameraMatrix();
+        if(m !== undefined) postMessage({cameraMatrix:m});
     }
 };

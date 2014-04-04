@@ -177,7 +177,24 @@ a.hlq-fill-div {
     margin: 10px;
 }
 
+.hlq-ar-container {
+    position: relative;
+}
+
+.hlq-8914videocontainer {
+    height: 96px;
+    margin-left: -150px;
+}
+
+@media (min-width: 768px) {
+    .hlq-8914videocontainer {
+        height: 0px;
+        margin-left: 0px;
+    }
+}
+
 #threeRenderer {
-    width: 640px;
-    padding-bottom: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }

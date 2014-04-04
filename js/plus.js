@@ -1,16 +1,11 @@
 //Dirty code. Don't judge :p
 
 var camera, scene;
-var videoCamera, videoScene;
-var videoTexture;
 var renderer;
 
 var video = document.getElementById('webcam');
-var videoCanvas = document.getElementById('videoCanvas');
-var videoCtx = videoCanvas.getContext('2d');
-
-var width = videoCanvas.width;
-var height = videoCanvas.height;
+var width = video.width;
+var height = video.height;
 
 var card;
 var tagSizeDelta = 0;
@@ -22,10 +17,9 @@ var tagCovers = [];
 
 var photos = [];
 
-function setCameraMatrix() {
+function setCameraMatrix(m) {
     var far = 1000;
     var near = 10;
-    var m = Chilitags.getCameraMatrix();
     camera.projectionMatrix.set(
             2*m[0]/width,              0,        2*m[2]/width-1,  0,
             0, -2*m[4]/height,    -(2*m[5]/height-1),  0,
@@ -35,25 +29,18 @@ function setCameraMatrix() {
 }
 
 function init() {
-    var tagConfig = '%YAML:1.0\n';
-    tagConfig += 'face:\n';
+    Paprika.start(undefined, video, false);
+    cardBundle = {};
     for (var i=0; i<=170; i++) {
-        tagConfig += '  - tag: '+(4*i  )+'\n';
-        tagConfig += '    size: 33.3\n';
-        tagConfig += '    translation: [-33.3, -33.3, 0.]\n';
-        tagConfig += '  - tag: '+(4*i+1)+'\n';
-        tagConfig += '    size: 33.3\n';
-        tagConfig += '    translation: [ 33.3, -33.3, 0.]\n';
-        tagConfig += '  - tag: '+(4*i+2)+'\n';
-        tagConfig += '    size: 33.3\n';
-        tagConfig += '    translation: [ 33.3,  33.3, 0.]\n';
-        tagConfig += '  - tag: '+(4*i+3)+'\n';
-        tagConfig += '    size: 33.3\n';
-        tagConfig += '    translation: [-33.3,  33.3, 0.]\n';
+        cardBundle[(4*i+0)] = {size: 33.3, translation: [-33.3, -33.3, 0.]};
+        cardBundle[(4*i+1)] = {size: 33.3, translation: [ 33.3, -33.3, 0.]};
+        cardBundle[(4*i+2)] = {size: 33.3, translation: [ 33.3,  33.3, 0.]};
+        cardBundle[(4*i+3)] = {size: 33.3, translation: [-33.3,  33.3, 0.]};
     }
-    FS.createDataFile("/", "tagConfig.yml",tagConfig, true, true);
-    Module.ccall('readTagConfiguration', 'void', ['string', 'boolean'], ["/tagConfig.yml", true]);
-    Chilitags.set3DFilter(5, 0.0);
+    Paprika.getCamera(setCameraMatrix);
+    Paprika.set3DFilter(5, 0.0);
+    Paprika.bundleTags({card: cardBundle});
+    Paprika.onTagUpdate(update);
 
     scene = new THREE.Scene();
 
@@ -83,7 +70,6 @@ function init() {
     }
 
     camera = new THREE.Camera();
-    setCameraMatrix();
     scene.add(camera);
 
     var photoFiles = [
@@ -118,26 +104,6 @@ function init() {
         card.add(photos[i]);
     }
 
-    videoScene = new THREE.Scene();
-    videoCamera = new THREE.OrthographicCamera(-width/2, width/2, height/2, -height/2, 1, 1000);
-    videoCamera.position.x = 0;
-    videoCamera.position.y = 0;
-    videoCamera.position.z = 0;
-    videoCamera.lookAt({x:0, y:0, z:-50});
-
-    videoTexture = new THREE.Texture(videoCanvas);
-    videoTexture.minFilter = THREE.LinearFilter;
-    videoTexture.magFilter = THREE.LinearFilter;
-    var plane = new THREE.Mesh(new THREE.PlaneGeometry(width, height, 1, 1), new THREE.MeshBasicMaterial({map: videoTexture, overdraw: true, side:THREE.DoubleSide}));
-    plane.position.x = 0;
-    plane.position.y = 0;
-    plane.position.z = -50;
-    plane.material.depthTest = false;
-    plane.material.depthWrite = false;
-    videoScene.add(plane);
-    videoScene.add(videoCamera);
-
-
     var hasCanvas = !! window.CanvasRenderingContext2D;
     var hasWebGL = ( function () { try {
             var canvas = document.createElement( 'canvas' );
@@ -159,25 +125,11 @@ function init() {
     renderLoop();
 }
 
-function renderLoop() {
-    TWEEN.update();
-
-    //Work around Firefox's bug 879717
-    var videoIsReady = false;
-    while (!videoIsReady) {
-        try {
-            videoCtx.drawImage(video, 0, 0, width, height);
-            videoIsReady = true;
-        } catch (e) {
-            if (e.name.indexOf("NS_ERROR_NOT_AVAILABLE") == -1) throw e;
-        }
-    }
-    videoTexture.needsUpdate = true;
-
-    var estimations = Chilitags.estimate(videoCanvas, false);
-    if ("face" in estimations) {
+function update(estimations) {
+    //for (k in estimations) console.log(k);
+    if ("card" in estimations) {
         card.updateMatrix();
-        card.matrix.set.apply(card.matrix, estimations["face"]);
+        card.matrix.set.apply(card.matrix, estimations["card"]);
 
         if (!started) {
             started = true;
@@ -230,26 +182,35 @@ function renderLoop() {
             animations[0].start();
         }
     }
+}
+
+function renderLoop() {
+    //console.log("render");
+    TWEEN.update();
 
     renderer.autoClear = false;
     renderer.clear();
-    renderer.render(videoScene, videoCamera);
     renderer.render(scene, camera);
 
     requestAnimationFrame( renderLoop );
 }
 
-window.URL = window.URL || window.webkitURL;
-navigator.getUserMedia  = navigator.getUserMedia
-|| navigator.webkitGetUserMedia
-|| navigator.mozGetUserMedia
-|| navigator.msGetUserMedia;
+function setContentHeight() {
+    var arcontainer = $('.hlq-ar-container');
+    var arparent = arcontainer.parent();
+    var containerWidth = arparent.width();
+    console.log(containerWidth);
+    if (containerWidth < 640) {
+        var scale = containerWidth/640;
+        console.log(scale);
+        arcontainer.css("transform", "scale("+scale+")");
+        arcontainer.css("margin-left",   "-"+((1-scale)*(arparent.width() +30)/2+15)+"px");
+        arcontainer.css("margin-top",    "-"+((1-scale)*(arparent.height()+30)/2+15)+"px");
+        arcontainer.css("margin-bottom", "-"+((1-scale)*(arparent.height()+30)/2-15)+"px");
+        
+    }
+}
+$(window).resize(setContentHeight);
+setContentHeight();
 
-navigator.getUserMedia({video: true}, function(stream) {
-        video.src = window.URL.createObjectURL(stream);
-        localMediaStream = stream;
-        video.play();
-        }, function() {alert('Failed to open video.')});
-
-//the timeOut is a work around Firefox's bug 879717
-video.addEventListener('play', function() {setTimeout(init, 2500);}, false);
+init();
