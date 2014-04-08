@@ -17,6 +17,11 @@ var tagCovers = [];
 
 var photos = [];
 
+var stats = {};
+stats.screenWidth = screen.width;
+var detectionTime = new Date();
+var renderTime = new Date();
+
 function setCameraMatrix(m) {
     var far = 1000;
     var near = 10;
@@ -30,12 +35,13 @@ function setCameraMatrix(m) {
 
 function init() {
     Paprika.start(undefined, video, false);
+    stats.videoStarted = true;
     cardBundle = {};
     for (var i=0; i<=170; i++) {
-        cardBundle[(4*i+0)] = {size: 33.3, translation: [-33.3, -33.3, 0.]};
-        cardBundle[(4*i+1)] = {size: 33.3, translation: [ 33.3, -33.3, 0.]};
-        cardBundle[(4*i+2)] = {size: 33.3, translation: [ 33.3,  33.3, 0.]};
-        cardBundle[(4*i+3)] = {size: 33.3, translation: [-33.3,  33.3, 0.]};
+        cardBundle[(4*i+0)] = {size: 33.3, keep: 1, translation: [-33.3, -33.3, 0.]};
+        cardBundle[(4*i+1)] = {size: 33.3, keep: 1, translation: [ 33.3, -33.3, 0.]};
+        cardBundle[(4*i+2)] = {size: 33.3, keep: 1, translation: [ 33.3,  33.3, 0.]};
+        cardBundle[(4*i+3)] = {size: 33.3, keep: 1, translation: [-33.3,  33.3, 0.]};
     }
     Paprika.getCamera(setCameraMatrix);
     Paprika.set3DFilter(5, 0.0);
@@ -105,11 +111,13 @@ function init() {
     }
 
     var hasCanvas = !! window.CanvasRenderingContext2D;
+    stats.hasCanvas = hasCanvas;
     var hasWebGL = ( function () { try {
             var canvas = document.createElement( 'canvas' );
             return !! window.WebGLRenderingContext && (
                 canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) );
             } catch( e ) { return false; } } )();
+    stats.hasWebGL = hasWebGL?true:false;
 
     if (hasWebGL) {
         renderer = new THREE.WebGLRenderer({antialias: true});
@@ -126,12 +134,17 @@ function init() {
 }
 
 function update(estimations) {
-    //for (k in estimations) console.log(k);
+    var endTime = new Date();
+    stats.detectionTime = (endTime.getTime() - detectionTime.getTime())
+    detectionTime = endTime;
+    stats.tags = "";
+    for (k in estimations) stats.tags += k;
     if ("card" in estimations) {
         card.updateMatrix();
         card.matrix.set.apply(card.matrix, estimations["card"]);
 
         if (!started) {
+            stats.animationStarted = true;
             started = true;
             var animations = [];
             for (var i = 0; i<4; i++) {
@@ -185,7 +198,10 @@ function update(estimations) {
 }
 
 function renderLoop() {
-    //console.log("render");
+    var endTime = new Date();
+    stats.renderTime = (endTime.getTime() - renderTime.getTime())
+    renderTime = endTime;
+
     TWEEN.update();
 
     renderer.autoClear = false;
@@ -199,10 +215,8 @@ function setContentHeight() {
     var arcontainer = $('.hlq-ar-container');
     var arparent = arcontainer.parent();
     var containerWidth = arparent.width();
-    console.log(containerWidth);
     if (containerWidth < 640) {
         var scale = containerWidth/640;
-        console.log(scale);
         arcontainer.css("transform", "scale("+scale+")");
         arcontainer.css("margin-left",   "-"+((1-scale)*(arparent.width() +30)/2+15)+"px");
         arcontainer.css("margin-top",    "-"+((1-scale)*(arparent.height()+30)/2+15)+"px");

@@ -1,3 +1,10 @@
+var stats = {};
+stats.screenWidth = screen.width;
+var detectionTime = new Date();
+stats.nTilts = 0;
+stats.nKeys = 0;
+stats.nTouches = 0;
+
 function KeyboardInputManager() {
   this.events = {};
 
@@ -59,6 +66,7 @@ KeyboardInputManager.prototype.listen = function () {
       if (mapped !== undefined) {
         event.preventDefault();
         self.emit("move", mapped);
+        stats.nKeys++;
       }
     }
 
@@ -123,17 +131,19 @@ KeyboardInputManager.prototype.listen = function () {
     if (Math.max(absDx, absDy) > 10) {
       // (right : left) : (down : up)
       self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+      stats.nTouches++;
     }
   });
 
 
     Paprika.start(document.getElementById('videoFrame'));
+    stats.videoStarted = true;
     cardBundle = {};
     for (var i=0; i<=170; i++) {
-        cardBundle[(4*i+0)] = {size: 33.3, translation: [-33.3, -33.3, 0.]};
-        cardBundle[(4*i+1)] = {size: 33.3, translation: [ 33.3, -33.3, 0.]};
-        cardBundle[(4*i+2)] = {size: 33.3, translation: [ 33.3,  33.3, 0.]};
-        cardBundle[(4*i+3)] = {size: 33.3, translation: [-33.3,  33.3, 0.]};
+        cardBundle[(4*i+0)] = {size: 33.3, keep:1, translation: [-33.3, -33.3, 0.]};
+        cardBundle[(4*i+1)] = {size: 33.3, keep:1, translation: [ 33.3, -33.3, 0.]};
+        cardBundle[(4*i+2)] = {size: 33.3, keep:1, translation: [ 33.3,  33.3, 0.]};
+        cardBundle[(4*i+3)] = {size: 33.3, keep:1, translation: [-33.3,  33.3, 0.]};
     }
     Paprika.bundleTags({card: cardBundle});
 
@@ -141,6 +151,11 @@ KeyboardInputManager.prototype.listen = function () {
     var previousOrientation = 0;
     var game = document.getElementById('game-dom');
     Paprika.onTagUpdate(function(objects) {
+        var endTime = new Date();
+        stats.detectionTime = (endTime.getTime() - detectionTime.getTime())
+        detectionTime = endTime;
+        stats.tags = "";
+        for (k in objects) stats.tags += k;
         if (tag_id in objects) {
             var transformation = new THREE.Matrix4();
             transformation.set.apply(transformation, objects[tag_id ]);
@@ -173,6 +188,7 @@ KeyboardInputManager.prototype.listen = function () {
                 if (orientation != -1) {
                     //console.log(orientation)
                     self.emit("move", orientation);
+                    stats.nTilts++;
                 }
             }
         }
