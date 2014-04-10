@@ -35,9 +35,8 @@ function setCameraMatrix(m) {
 
 function init() {
     Paprika.start(undefined, video, false);
-    stats.videoStarted = true;
     cardBundle = {};
-    for (var i=0; i<=170; i++) {
+    for (var i=0; i<=180; i++) {
         cardBundle[(4*i+0)] = {size: 33.3, keep: 1, translation: [-33.3, -33.3, 0.]};
         cardBundle[(4*i+1)] = {size: 33.3, keep: 1, translation: [ 33.3, -33.3, 0.]};
         cardBundle[(4*i+2)] = {size: 33.3, keep: 1, translation: [ 33.3,  33.3, 0.]};

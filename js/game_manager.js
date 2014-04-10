@@ -81,12 +81,12 @@ GameManager.prototype.addRandomTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
-  stats.score = this.score;
-  stats.bestScore = this.storageManager.getBestScore();
-
   if (this.storageManager.getBestScore() < this.score) {
     this.storageManager.setBestScore(this.score);
   }
+
+  stats.score = this.score;
+  stats.bestScore = this.storageManager.getBestScore();
 
   // Clear the state when the game is over (game over only, not win)
   if (this.over) {
