@@ -81,84 +81,28 @@
     <div class='hlq-spacer-navbar'></div>
     <div class='container' role='main'>
       <div class='hlq-main'>
-        <p>
-          Un formulaire... Ce n'est pas très convivial mais ça nous aide pour l'organisation. Si c'est trop embêtant, vous pouvez aussi nous
-          <a href='mailto:mariage@hl-q.fr?subject=Reponse'>
-            répondre par email
-          </a>
-          .
-        </p>
-        <h1>Réponse</h1>
-        <div class='hidden' id='hlq-form-wait'>
-          <p>Un moment...</p>
-        </div>
-        <div class='hidden' id='hlq-form-error'>
-          <p>Problème de communication avec le serveur...</p>
-          <p>
-            Réessayez plus tard et/ou
-            <a href='mailto:mariage@hl-q.fr?subject=Probleme%20avec%20le%20serveur'>
-              envoyez-nous un email.
-            </a>
-          </p>
-        </div>
-        <div id='hlq-form-container'>
-          <p>Pour répondre à notre invitation, merci de reporter le code en bas à droite de l'intérieur du faire-part&nbsp;:</p>
-          <form action='#' class='form-inline' id='hlq-form' onSubmit='return false;' role='form'>
-            <label>Code</label>
-            <input name='00form-family' type='hidden' value='code' />
-            <input name='00lang' type='hidden' value='fr' />
-            <input class='form-control' name='00code' placeholder='exemple: A11A1A' type='text' />
-            <button class='btn btn-default' onClick='send();'>Envoyer</button>
-          </form>
+        <div class='row'>
+          <div class='col-sm-12'>
+            <h1>Se rendre à la mairie</h1>
+            <p>Comme la mairie est en plein centre ville (et le parking de sa place d'honneur n'est pas ouver aux visiteurs), voilà deux astuces pour trouver où se garer:</p>
+            <p>
+              Si vous êtes prévoyants, vous pouvez imprimer le
+              <a href='http://www.grand-dijon.fr/onlinemedia/Upload/12.Stationner.pdf' target='_blank'>
+                plan des parkings et places de parking du Grand Dijon.
+              </a>
+            </p>
+            <p>
+              Si vous déjà en retard, et que vous cherchez un parking avec des places libres, vous pouvez essayer une des applications de
+              <a href='http://www.parking-dijon.com/' target='_blank'>
+                parking-dijon.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
     <script src='/js/jquery.min.js'></script>
     <script src='/js/bootstrap.min.js'></script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        function send() {
-            $('#hlq-form-container').addClass('hidden');
-            $('#hlq-form-wait').removeClass('hidden');
-            $.ajax({
-                url: 'http://backend.hl-q.fr/mariage',
-                dataType: 'jsonp',
-                data : $('#hlq-form').serialize(),
-                timeout: 30000,
-                success: function(json){
-                    $('#hlq-form-wait').addClass('hidden');
-                    $('#hlq-form-container').removeClass('hidden');
-                    $('#hlq-form-container').html(json.html);
-                    displayGuestList();
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    $('#hlq-form-wait').addClass('hidden');
-                    $('#hlq-form-error').removeClass('hidden');
-                }
-            });
-        }
-        
-        var guestListLength = 1;
-        function displayGuestList() {
-            if ($('input:radio[name=00reponse]:checked').val() == "yes")
-                $('#hlq-guest-list').removeClass('hidden');
-            else
-                $('#hlq-guest-list').addClass('hidden');
-            for (var i = 0; i < guestListLength; i++) {
-                $('#hlq-guest'+i).removeClass('hidden');
-            }
-            for (var i = guestListLength; i < 10; i++) {
-                $('#hlq-guest'+i).addClass('hidden');
-            }
-            if (guestListLength>=10) $('#hlq-guestAdd').addClass('hidden');
-        }
-        function addGuest() {
-            if (guestListLength<10) guestListLength = guestListLength+1;
-            displayGuestList();
-        }
-        displayGuestList();
-      //]]>
-    </script>
     <script src='http://backend.hl-q.fr/mariage?ping=get'></script>
   </body>
 </html>
