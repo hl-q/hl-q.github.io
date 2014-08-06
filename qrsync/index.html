@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang='fr'>
+  <head>
+    <meta charset='utf-8' />
+    <meta content='IE=edge' http-equiv='X-UA-Compatible' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
+    <meta content='Huong-Ly &amp; Quentin' name='description' />
+    <meta content='Huong-Ly &amp; Quentin' name='author' />
+    <link href='favicon.ico' rel='shortcut icon' />
+    <title>Huong-Ly & Quentin</title>
+    <link href='/css/bootstrap.min.css' rel='stylesheet' />
+    <link href='/css/hl-q.css' rel='stylesheet' />
+    <!--[if lt IE 9]>
+      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'></script>
+      <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js'></script>
+    <![endif]-->
+  </head>
+  <body role='document'>
+    <div class='hlq-spacer-navbar'></div>
+    <div class='container' role='main'>
+      <div class='hlq-main'>
+        <div class='row'>
+          <div class='col-sm-12'>
+            <div class='hlq-tag'></div>
+            <h3 class='hlq-timestamp text-center'></h3>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-sm-12'>
+            <h1 class='text-center'>http://photos.hl-q.fr</h1>
+            <h2 class='text-center'>photos@hl-q.fr</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='/js/jquery.min.js'></script>
+    <script src='/js/bootstrap.min.js'></script>
+    <script src='/js/qrcode.min.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var code = new QRCode($('.hlq-tag').get(0), "");
+        var timestamp = $('.hlq-timestamp')
+        function updateTime() {
+            var INTERVAL = 100;
+            var now = ""+($.now());
+            timestamp.text(now);
+            code.makeCode(now);
+            setTimeout(updateTime, INTERVAL-$.now()%INTERVAL);
+        }
+        updateTime();
+      //]]>
+    </script>
+    <script src='http://backend.hl-q.fr/mariage?ping=get'></script>
+  </body>
+</html>

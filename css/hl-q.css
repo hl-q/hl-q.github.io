@@ -194,3 +194,78 @@ a.hlq-fill-div {
     top: 0;
     left: 0;
 }
+
+.hlq-tag img {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dz-preview {
+    margin: 16px;
+    background: white;
+    position: relative;
+}
+
+.dz-message {
+    border: solid 3px #603f7f;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 16px;
+}
+
+.dz-filename {
+    display: inline;
+}
+.dz-filename {
+    margin-top: 14px;
+    margin-left: 14px;
+}
+
+.dz-size:before {
+    content: "(";
+    margin-left: 14px;
+}
+.dz-size:after {
+    content: ")";
+}
+.dz-success-mark, .dz-error-mark {
+    display: none;
+    position: absolute;
+    font-size: 64px;
+    top: 0;
+    right: 0;
+}
+
+.dz-preview img {
+    margin: 16px;
+}
+
+.dz-progress {
+    width: 100px;
+    height: 10px;
+    background:#9d7bbd;
+    position: relative;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.dz-upload {
+    height: 100%;
+    background: #603f7f;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+.dz-success .dz-success-mark,
+.dz-error .dz-error-mark
+{
+    display: block;
+}
+
+.dz-error-message {
+    margin-left: 16px;
+    margin-right: 16px;
+    min-height: 1px;
+}
