@@ -31,8 +31,22 @@
         </div>
         <div class='navbar-collapse collapse'>
           <ul class='nav navbar-nav'>
-            <li>
-              <a href='http://www.hl-q.fr/vn/reponse'>Trả lời</a>
+            <li class='dropdown'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                Hình ảnh
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li>
+                  <a href='http://www.hl-q.fr/vn/plus'>Gửi hình ảnh</a>
+                </li>
+                <li>
+                  <a href='http://photos.hl-q.fr/mariage-vn'>Lễ vu quy</a>
+                </li>
+                <li>
+                  <a href='http://photos.hl-q.fr/mariage'>Đám cưới</a>
+                </li>
+              </ul>
             </li>
             <li class='dropdown'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
@@ -47,32 +61,6 @@
                   <a href='http://www.hl-q.fr/vn/9814'>9814</a>
                 </li>
               </ul>
-            </li>
-            <li class='dropdown'>
-              <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
-                Thông tin
-                <b class='caret'></b>
-              </a>
-              <ul class='dropdown-menu'>
-                <li>
-                  <a href='http://www.hl-q.fr/vn/accomodation'>Nơi ăn nghỉ</a>
-                </li>
-                <li>
-                  <a href='http://www.hl-q.fr/vn/transport'>Đường đến</a>
-                </li>
-                <li>
-                  <a href='http://www.hl-q.fr/fr/rendezvous'>Lieu de rendez-vous</a>
-                </li>
-                <li>
-                  <a href='http://www.hl-q.fr/en/rendezvous'>Meeting point</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href='http://www.hl-q.fr/en/animations'>Animations</a>
-            </li>
-            <li>
-              <a href='http://www.hl-q.fr/en/liste'>Wedding list</a>
             </li>
           </ul>
         </div>
@@ -94,25 +82,7 @@
     </div>
     <div class='container' role='main'>
       <div class='row'>
-        <div class='col-sm-6'>
-          <div class='panel panel-default hlq-filled-panel'>
-            <a class='hlq-fill-div' href='/vn/reponse'></a>
-            <div class='panel-heading'>
-              <h3 class='panel-title'>
-                <a href='/vn/reponse'>
-                  <span class='glyphicon glyphicon-pencil'></span>
-                  Trả lời
-                </a>
-              </h3>
-            </div>
-            <div class='panel-body'>
-              <a href='/vn/reponse'>
-                Xin vui lòng phúc đáp
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class='col-sm-6'>
+        <div class='col-sm-4'>
           <div class='panel panel-default hlq-filled-panel'>
             <a class='hlq-fill-div' href='/vn/plus'></a>
             <div class='panel-heading'>
@@ -123,48 +93,60 @@
                 </a>
               </h3>
             </div>
-            <div class='panel-body'>
-              <a href='/vn/plus'>
-                Món quà kèm theo thiếp mời...
-              </a>
+          </div>
+        </div>
+        <div class='col-sm-4'>
+          <div class='panel panel-default hlq-filled-panel'>
+            <a class='hlq-fill-div' href='http://photos.hl-q.fr/vn'></a>
+            <div class='panel-heading'>
+              <h3 class='panel-title'>
+                <a href='http://photos.hl-q.fr/vn'>
+                  <span class='glyphicon glyphicon-upload'></span>
+                  Gửi hình ảnh
+                </a>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-4'>
+          <div class='panel panel-default hlq-filled-panel'>
+            <a class='hlq-fill-div' href='http://photos.hl-q.fr/mariage-vn'></a>
+            <div class='panel-heading'>
+              <h3 class='panel-title'>
+                <a href='http://photos.hl-q.fr/mariage-vn'>
+                  <span class='glyphicon glyphicon-camera'></span>
+                  Lễ vu quy
+                </a>
+              </h3>
             </div>
           </div>
         </div>
       </div>
       <div class='row'>
-        <div class='col-sm-6'>
+        <div class='col-sm-4'>
           <div class='panel panel-default hlq-filled-panel'>
-            <a class='hlq-fill-div' href='/vn/accomodation'></a>
+            <a class='hlq-fill-div' href='/vn/9814'></a>
             <div class='panel-heading'>
               <h3 class='panel-title'>
-                <a href='/vn/accomodation'>
-                  <span class='glyphicon glyphicon-home'></span>
-                  Nơi ăn nghỉ
+                <a href='/vn/9814'>
+                  <span class='glyphicon glyphicon-qrcode'></span>
+                  9814
                 </a>
               </h3>
-            </div>
-            <div class='panel-body'>
-              <a href='/vn/accomodation'>
-                Nơi ăn nghỉ
-              </a>
             </div>
           </div>
         </div>
-        <div class='col-sm-6'>
+        <div class='col-sm-4'></div>
+        <div class='col-sm-4'>
           <div class='panel panel-default hlq-filled-panel'>
-            <a class='hlq-fill-div' href='/vn/transport'></a>
+            <a class='hlq-fill-div' href='http://photos.hl-q.fr/mariage'></a>
             <div class='panel-heading'>
               <h3 class='panel-title'>
-                <a href='/vn/transport'>
-                  <span class='glyphicon glyphicon-road'></span>
-                  Đường đến
+                <a href='http://photos.hl-q.fr/mariage'>
+                  <span class='glyphicon glyphicon-camera'></span>
+                  Đám cưới
                 </a>
               </h3>
-            </div>
-            <div class='panel-body'>
-              <a href='/vn/transport'>
-                Đường đến
-              </a>
             </div>
           </div>
         </div>
